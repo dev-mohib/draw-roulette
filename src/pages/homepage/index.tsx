@@ -2,11 +2,20 @@ import React, { useRef, useState } from 'react'
 import Navbar from '../../components/navbar'
 import { IoMdAdd, IoMdRemove} from 'react-icons/io'
 import { drawingSamples, shuffle } from '../../utils/drawingSamples'
+import { editorActions, useAppDispatch, useAppSelector } from '@state/store'
+import { CanvasType, TimeOptions } from 'types/state'
 const ChildBody = () => {
-    const timeOptions = [{label : '2 minutes', value : 120},{label : '5 minutes', value : 300},{label : '10 minutes', value : 600},{label : '15 minutes', value : 900}]
-    const [time, setTime] = useState(0)
+    const timeOptions : TimeOptions[] = [{label : '2 minutes', value : 120},{label : '5 minutes', value : 300},{label : '10 minutes', value : 600},{label : '15 minutes', value : 900}]
+    const [timeIndex, setTimeIndex] = useState(0)
     const [imageCount, setImageCount] = useState(3)
     const [images, setImages] = useState(drawingSamples)
+    const dispatch = useAppDispatch()
+
+
+    const startGame = () => {
+        const canvasList : CanvasType[] = images.slice(0, imageCount).map(img => ({canvasJson : null,imageUrl : img, isPainted : false}))
+        dispatch(editorActions.startGame({timeOption : timeOptions[timeIndex],canvasList}))
+    }
     const Actions = () => {
         return( 
         <div className="flex w-full  items-center p-6 space-x-2 border-t border-gray-200 rounded-b dark:border-gray-600">
@@ -14,7 +23,7 @@ const ChildBody = () => {
                 const newList = shuffle(drawingSamples)
                 setImages([...newList])
                 }} data-modal-toggle="defaultModal" type="button" className="text-gray-500 bg-white hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-blue-300 rounded-lg border border-gray-200 text-sm font-medium px-5 py-2.5 hover:text-gray-900 focus:z-10 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-500 dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-gray-600">Shuffle</button>
-            <button   data-modal-toggle="defaultModal" type="button" className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Start</button>
+            <button onClick={startGame}  data-modal-toggle="defaultModal" type="button" className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Start</button>
         </div>
     )
 }
@@ -31,13 +40,13 @@ const ChildBody = () => {
                 <h1>Select Time</h1>
                 <div className='flex text-white'>
                     <div className='flex-r-c px-3 py-2 cursor-pointer border border-gray-200 bg-blue-600' onClick={() => {
-                        setTime(time > 0 ? time - 1 : timeOptions.length-1)
+                        setTimeIndex(timeIndex > 0 ? timeIndex - 1 : 0)
                     }}>
                     <IoMdRemove />
                     </div>
-                    <div className='flex-r-c px-3 py-2 border border-gray-200 bg-blue-600'>{timeOptions[time].label}</div>
+                    <div className='flex-r-c px-3 py-2 border border-gray-200 bg-blue-600'>{timeOptions[timeIndex].label}</div>
                     <div className='px-3 py-2 flex-r-c cursor-pointer  border border-gray-200 bg-blue-600' onClick={() => {
-                            setTime(time < timeOptions.length - 1 ? time + 1 : 0)
+                            setTimeIndex(timeIndex < timeOptions.length - 1 ? timeIndex + 1 : timeOptions.length - 1)
                         }}>
                         <IoMdAdd />
                     </div>
@@ -48,13 +57,13 @@ const ChildBody = () => {
                 <h1>Select Number of images</h1>
                 <div className='flex text-white'>
                     <div className='flex-r-c px-3 py-2 cursor-pointer border border-gray-200 bg-blue-600' onClick={() => {
-                        setImageCount(imageCount > 1 ? imageCount - 1 : 6)
+                        setImageCount(imageCount > 1 ? imageCount - 1 : 1)
                     }}>
                     <IoMdRemove />
                     </div>
                     <div className='flex-r-c px-3 py-2 border border-gray-200 bg-blue-600'>{imageCount}</div>
                     <div className='px-3 py-2 flex-r-c cursor-pointer  border border-gray-200 bg-blue-600' onClick={() => {
-                            setImageCount(imageCount < 6  ? imageCount + 1 : 1)
+                            setImageCount(imageCount < 6  ? imageCount + 1 : 6)
                         }}>
                         <IoMdAdd />
                     </div>

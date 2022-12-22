@@ -1,12 +1,12 @@
 import { configureStore  } from '@reduxjs/toolkit'
 import { TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux'
 import { uiActions,uiSlice } from './slices/uiSlice'
-
+import { editorActions, editorSlice} from './slices/editorSlice'
 export const store = configureStore({
   reducer : {
-      uiSlice : uiSlice.reducer
+      uiSlice : uiSlice.reducer,
+      editorSlice : editorSlice.reducer
     },
-    
   })
   // Dispatch Hook
   export const useAppDispatch = () => useDispatch<typeof store.dispatch>()
@@ -16,5 +16,6 @@ export const store = configureStore({
   export default store
 
   export {
-    uiActions
+    uiActions,
+    editorActions,
   }

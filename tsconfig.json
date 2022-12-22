@@ -14,8 +14,16 @@
     "resolveJsonModule": true,
     "isolatedModules": true,
     "noEmit": true,
-    "jsx": "react-jsx"
+    "jsx": "react-jsx",
+    "baseUrl": ".",
+    "paths": {
+      "@assets/*" : ["src/assets/*"],
+      "@components/*" : ["src/components/*"],
+      "@pages/*" : ["src/pages/*"],
+      "@state/*" : ["src/state/*"],
+      "types/*" : ["src/types/*"],
+    }
   },
-  "include": ["src"],
+  "include": ["next-env.d.ts", "twin.d.ts", "**/*.ts", "**/*.tsx", "**/*.js", "**/*.jsx"],
   "references": [{ "path": "./tsconfig.node.json" }]
 }
