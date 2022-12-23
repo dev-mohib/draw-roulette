@@ -1,9 +1,4 @@
 <?php
-header('Content-Type: application/json; charset=utf-8');
-header('Access-Control-Allow-Origin: *');
-header('Access-Control-Allow-Methods: GET, POST');
-header("Access-Control-Allow-Headers: X-Requested-With");
-
 putenv('GOOGLE_APPLICATION_CREDENTIALS=/client_secret_10431894352-fabqe9s4hirpe4hiou6464gt646mnf27.apps.googleusercontent.com.json');
 error_reporting(E_ERROR | E_PARSE);
 require __DIR__ . '/vendor/autoload.php';
@@ -41,7 +36,7 @@ $service = new Drive($client);
 $optParams = array(
     'pageSize' => 100,
     'fields' => "files(id,name,thumbnailLink,webViewLink)",
-    'q' => "'".$folderId."' in parents",
+    'q' => "'".$folderId."' in parents"
     );
 $result = $service->files->listFiles($optParams);
 // $object = (object) array_filter((array) $result);

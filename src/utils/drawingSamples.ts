@@ -12,10 +12,11 @@ import drawing11 from '../assets/drawing/drawing11.jpg'
 import drawing12 from '../assets/drawing/drawing12.png'
 import drawing13 from '../assets/drawing/drawing13.jpg'
 import drawing14 from '../assets/drawing/drawing14.webp'
+import { GoogleDriveResponse } from 'types/index'
 
 export const drawingSamples = [drawing1, drawing2, drawing3, drawing4, drawing5, drawing6, drawing7, drawing8, drawing9, drawing10, drawing11, drawing12, drawing13, drawing14];
 
-export function shuffle(array : string[]) {
+export function shuffle(array : GoogleDriveResponse[]) {
     let currentIndex = array.length,  randomIndex;
   
     // While there remain elements to shuffle.
