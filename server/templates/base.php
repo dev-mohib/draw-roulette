@@ -112,7 +112,7 @@ function invalidCsrfTokenWarning()
 function checkServiceAccountCredentialsFile()
 {
     // service account creds
-    $application_creds = __DIR__ . '/../../service-account-credentials.json';
+    $application_creds = __DIR__ . '/../draw-roulette-34eca53fb3ef.json';
 
     return file_exists($application_creds) ? $application_creds : false;
 }
