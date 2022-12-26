@@ -3,12 +3,11 @@ import { IoMdAdd, IoMdRemove} from 'react-icons/io'
 import { useNavigate } from 'react-router-dom'
 import { shuffle } from '../../utils/drawingSamples'
 import { editorActions, useAppDispatch, useAppSelector } from '@state/store'
-import { CanvasType, TimeOptions } from 'types/state'
+import { CanvasType } from 'types/state'
 import Loader from '@components/loader'
-import Modal from './Modal'
+import { timeDefaults } from 'src/utils/defaults'
 import { GoogleDriveResponse } from 'types/index'
 const ChildBody = () => {
-    const timeOptions : TimeOptions[] = [{label : '2 minutes', value : 120},{label : '5 minutes', value : 300},{label : '10 minutes', value : 600},{label : '15 minutes', value : 900}]
     const [timeIndex, setTimeIndex] = useState(0)
     const [imageCount, setImageCount] = useState(3)
     const [googleImages, setGoogleImages] = useState<GoogleDriveResponse[]>([])
@@ -20,13 +19,13 @@ const ChildBody = () => {
         getGoogleDriveFiles()
     },[])
     const getGoogleDriveFiles = async() => {
-        const response : GoogleDriveResponse[] = await fetch("http://localhost:8000").then(res => res.json());
+        const response : GoogleDriveResponse[] = await fetch("https://drawroulet.kidsart.com.sg/api").then(res => res.json());
         setGoogleImages(response)
     }
 
     const startGame = () => {
         const canvasList : CanvasType[] = googleImages.slice(0, imageCount).map(image => ({canvasJson : null,isPainted : false, image}))
-        dispatch(editorActions.startGame({timeOption : timeOptions[timeIndex],canvasList}))
+        dispatch(editorActions.startGame({timeOption : timeDefaults[timeIndex],canvasList}))
         navigate("/playing")
     }
     const Actions = () => {
@@ -62,9 +61,9 @@ const ChildBody = () => {
                         }}>
                         <IoMdRemove />
                         </div>
-                        <div className='flex-r-c px-3 py-2 border border-gray-200 bg-blue-600'>{timeOptions[timeIndex].label}</div>
+                        <div className='flex-r-c px-3 py-2 border border-gray-200 bg-blue-600'>{timeDefaults[timeIndex].label}</div>
                         <div className='px-3 py-2 flex-r-c cursor-pointer  border border-gray-200 bg-blue-600' onClick={() => {
-                                setTimeIndex(timeIndex < timeOptions.length - 1 ? timeIndex + 1 : timeOptions.length - 1)
+                                setTimeIndex(timeIndex < timeDefaults.length - 1 ? timeIndex + 1 : timeDefaults.length - 1)
                             }}>
                             <IoMdAdd />
                         </div>

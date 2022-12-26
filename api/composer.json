@@ -10,5 +10,11 @@
             "Drive",
             "YouTube"
         ]
+    },
+    "config": {
+
+        "platform": {
+            "php": "7.1.0"
+        }
     }
 }

@@ -22,7 +22,10 @@ const Index = () => {
       getGoogleDriveFiles()
   },[])
   const getGoogleDriveFiles = async() => {
-      const response : GoogleDriveResponse[] = await fetch("http://localhost:8000").then(res => res.json());
+      const response : GoogleDriveResponse[] = await fetch("https://drawroulet.kidsart.com.sg/api/index.php").then(res => res.json()).catch(e => {
+        console.log("Error : ", e)
+        return []
+      })
       setGoogleImages(response)
   }
   
