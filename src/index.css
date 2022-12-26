@@ -3,7 +3,11 @@
 @tailwind utilities;
 
 .btn{
-    @apply block text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800
+    /* @apply  text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5  dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 */
+} 
+
+.btn-primary{
+    @apply  text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5  dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800
 } 
 
 .flex-r-c{
@@ -11,4 +15,19 @@
 }
 .flex-c-c{
     @apply flex flex-col justify-center items-center
+}
+.flex-r-between{
+    @apply flex flex-row justify-between items-center
+}
+
+.flex-c-between{
+    @apply flex flex-col justify-between items-center
+}
+
+.orientation {
+    @apply flex justify-between items-center landscape:flex-row portrait:flex-col
+}
+
+.orientation div{
+    @apply landscape:w-1/2 portrait:w-full landscape:h-full portrait:h-1/2
 }

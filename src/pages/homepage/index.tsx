@@ -1,8 +1,10 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { IoMdAdd, IoMdRemove} from 'react-icons/io'
+import { useNavigate } from 'react-router-dom'
 import { shuffle } from '../../utils/drawingSamples'
 import { editorActions, useAppDispatch, useAppSelector } from '@state/store'
 import { CanvasType, TimeOptions } from 'types/state'
+import Loader from '@components/loader'
 import Modal from './Modal'
 import { GoogleDriveResponse } from 'types/index'
 const ChildBody = () => {
@@ -11,6 +13,7 @@ const ChildBody = () => {
     const [imageCount, setImageCount] = useState(3)
     const [googleImages, setGoogleImages] = useState<GoogleDriveResponse[]>([])
     const dispatch = useAppDispatch()
+    const navigate  = useNavigate()
 
 
     useEffect(() => {
@@ -22,8 +25,9 @@ const ChildBody = () => {
     }
 
     const startGame = () => {
-        const canvasList : CanvasType[] = googleImages.slice(0, imageCount).map(img => ({canvasJson : null,imageUrl : img.id, isPainted : false}))
+        const canvasList : CanvasType[] = googleImages.slice(0, imageCount).map(image => ({canvasJson : null,isPainted : false, image}))
         dispatch(editorActions.startGame({timeOption : timeOptions[timeIndex],canvasList}))
+        navigate("/playing")
     }
     const Actions = () => {
         return( 
@@ -40,65 +44,69 @@ const ChildBody = () => {
     <div>
     <div className='flex flex-row justify-between w-full px-10'>
         <div className='w-96'>
-            <div className='flex flex-wrap'>
+            {
+            googleImages.length == 0 ?<div className='flex-c-c'>
+             <Loader /> </div>
+             :<div className='flex flex-wrap'>
                 {googleImages.slice(0, imageCount).map((d, i) =>
                 <img key={i}  src={d.thumbnailLink} alt={d.name} className="w-28 h-28 mx-2 my-2" />)}
             </div>
+        }
         </div>
-        <div className=''>
-            <div className='my-5'>
-                <h1>Select Time</h1>
-                <div className='flex text-white'>
-                    <div className='flex-r-c px-3 py-2 cursor-pointer border border-gray-200 bg-blue-600' onClick={() => {
-                        setTimeIndex(timeIndex > 0 ? timeIndex - 1 : 0)
-                    }}>
-                    <IoMdRemove />
-                    </div>
-                    <div className='flex-r-c px-3 py-2 border border-gray-200 bg-blue-600'>{timeOptions[timeIndex].label}</div>
-                    <div className='px-3 py-2 flex-r-c cursor-pointer  border border-gray-200 bg-blue-600' onClick={() => {
-                            setTimeIndex(timeIndex < timeOptions.length - 1 ? timeIndex + 1 : timeOptions.length - 1)
+            <div className=''>
+                <div className='my-5'>
+                    <h1>Select Time</h1>
+                    <div className='flex text-white'>
+                        <div className='flex-r-c px-3 py-2 cursor-pointer border border-gray-200 bg-blue-600' onClick={() => {
+                            setTimeIndex(timeIndex > 0 ? timeIndex - 1 : 0)
                         }}>
-                        <IoMdAdd />
+                        <IoMdRemove />
+                        </div>
+                        <div className='flex-r-c px-3 py-2 border border-gray-200 bg-blue-600'>{timeOptions[timeIndex].label}</div>
+                        <div className='px-3 py-2 flex-r-c cursor-pointer  border border-gray-200 bg-blue-600' onClick={() => {
+                                setTimeIndex(timeIndex < timeOptions.length - 1 ? timeIndex + 1 : timeOptions.length - 1)
+                            }}>
+                            <IoMdAdd />
+                        </div>
                     </div>
                 </div>
-            </div>
 
-            <div className='my-5'>
-                <h1>Select Number of images</h1>
-                <div className='flex text-white'>
-                    <div className='flex-r-c px-3 py-2 cursor-pointer border border-gray-200 bg-blue-600' onClick={() => {
-                        setImageCount(imageCount > 1 ? imageCount - 1 : 1)
-                    }}>
-                    <IoMdRemove />
-                    </div>
-                    <div className='flex-r-c px-3 py-2 border border-gray-200 bg-blue-600'>{imageCount}</div>
-                    <div className='px-3 py-2 flex-r-c cursor-pointer  border border-gray-200 bg-blue-600' onClick={() => {
-                            setImageCount(imageCount < 6  ? imageCount + 1 : 6)
+                <div className='my-5'>
+                    <h1>Select Number of images</h1>
+                    <div className='flex text-white'>
+                        <div className='flex-r-c px-3 py-2 cursor-pointer border border-gray-200 bg-blue-600' onClick={() => {
+                            setImageCount(imageCount > 1 ? imageCount - 1 : 1)
                         }}>
-                        <IoMdAdd />
+                        <IoMdRemove />
+                        </div>
+                        <div className='flex-r-c px-3 py-2 border border-gray-200 bg-blue-600'>{imageCount}</div>
+                        <div className='px-3 py-2 flex-r-c cursor-pointer  border border-gray-200 bg-blue-600' onClick={() => {
+                                setImageCount(imageCount < 6  ? imageCount + 1 : 6)
+                            }}>
+                            <IoMdAdd />
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
     </div>
     <Actions />
     </div>
     )
 }
 const Index = () => {
+    const navigate = useNavigate()
     const data : String[] = ['bg-red-500', 'bg-green-300', 'bg-blue-400', 'bg-red-500', 'bg-green-600', 'bg-blue-700', 'bg-red-600', 'bg-green-700', 'bg-blue-700']
    
     return (
     <div className='h-screen'>
-        <div className='flex justify-end my-5'>
-            <Modal header={'Start New game'} body={<ChildBody />} btnText="Start New" />
-            {/* <button className='px-4 py-2 rounded-3xl bg-blue-600 text-white hover:bg-blue-400'>Create New</button> */}
+        <div className='w-full flex justify-end my-5'>
+            <button onClick={() => navigate('/newgame')}  className='btn-primary '>Create New</button>
         </div>
         <div className='flex justify-start flex-wrap w-full'>
             {
                 data.map((color,i) => <Card key={i} color={color} />)
             }
-        </div>
+        </div>btn-primary 
     </div>
   )
 }

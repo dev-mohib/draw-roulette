@@ -1,14 +1,15 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { CanvasType, EditorStateType, TimeOptions } from "src/types/state";
+import { CanvasType, EditorStateType, GameStatus, TimeOptions } from "src/types/state";
 
 
 const initialState : EditorStateType  = {
     activeCanvas : 0,
     canvasList : [],
     isLoading : true,
-    timeOptions : {label : "10 minutes", value : 600},
-    isPlaying : false,
-    isActive : false
+    timeOptions : {label : "5 minutes", value : 500},
+    isActive : false,
+    gameStatus : "idle",
+    timeRemaining : 10
    }
 export const editorSlice = createSlice({
    initialState,
@@ -18,9 +19,10 @@ export const editorSlice = createSlice({
             state.activeCanvas = action.payload
         },
         startGame : (state, action : PayloadAction<{timeOption : TimeOptions, canvasList : CanvasType[]}>) => {
-            state.isPlaying = true
             state.isActive = true
+            state.gameStatus = 'paused'
             state.timeOptions = action.payload.timeOption
+            state.timeRemaining = action.payload.timeOption.value
             state.canvasList = action.payload.canvasList
         },
         pushCanvas : (state, action : PayloadAction<CanvasType>) => {
@@ -34,17 +36,19 @@ export const editorSlice = createSlice({
         setTimeOptions : (state, action : PayloadAction<TimeOptions>) => {
             state.timeOptions = action.payload
         },
-        startPlaying : (state) => {
-            state.isPlaying = true
-        },
-        stopPlaying : (state) => {
-            state.isPlaying = false
-        },
         setActive : (state) => {
             state.isActive = true
         },
         unsetActive : (state) => {
             state.isActive = false
+        },
+        decreaseTime : (state) => {
+            if(state.timeRemaining > 0){
+                state.timeRemaining -= 1
+            }
+        },
+        setGameStatus : (state, action : PayloadAction<GameStatus>)=>{
+            state.gameStatus = action.payload
         }
     }
 })

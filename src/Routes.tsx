@@ -6,6 +6,8 @@ import Callback from '@pages/authorize/callback';
 import Auth from '@pages/authorize/auth'
 import OAuth from '@pages/authorize/OAuth';
 import Homepage from '@pages/homepage'
+import Gameplay from '@pages/gameplay'
+import NewGame from '@pages/newgame'
 const AppRoutes = () => {
     return(
     <BrowserRouter>
@@ -17,6 +19,8 @@ const AppRoutes = () => {
             <Route path='/callback' element={<Callback />}/>
             <Route path='/auth' element={<Auth />}  />
             <Route path='/oauth' element={<OAuth />}  />
+            <Route path='/gameplay' element={<Gameplay />}  />
+            <Route path='/newgame' element={<NewGame />}  />
             {/* <Route path="*" element={<NotFound />} /> */}
         </Routes>
     </BrowserRouter>
