@@ -1,4 +1,7 @@
-export const mockData =[
+import { CanvasType } from './../../types/state.d';
+
+
+export const mockData : CanvasType[] =[
   {
     canvasJson: {
       version: '5.2.4',

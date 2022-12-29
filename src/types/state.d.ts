@@ -10,13 +10,22 @@ export interface EditorStateType{
     canvasList : CanvasType[],
     gameStatus : GameStatus,
     isActive : boolean,
-    timeRemaining : number
+    timeRemaining : number,
+    isCanvasLoading : boolean,
+    id : string
 }
 
 export interface CanvasType {
     canvasJson : any,
     image : GoogleDriveResponse,
-    isPainted : boolean
+    isPainted : boolean,
+    history : HistoryObject
+}
+
+export type HistoryObject  = {
+  isLocked : boolean,
+  undo : any[],
+  redo : any[]
 }
 
 

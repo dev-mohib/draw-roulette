@@ -1,11 +1,11 @@
 import { configureStore  } from '@reduxjs/toolkit'
 import { TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux'
 import { uiActions,uiSlice } from './slices/uiSlice'
-import { editorActions, editorSlice} from './slices/editorSlice'
+import { gameActions, gameSlice} from './slices/gameSlice'
 export const store = configureStore({
   reducer : {
       uiSlice : uiSlice.reducer,
-      editorSlice : editorSlice.reducer
+      gameSlice : gameSlice.reducer
     },
   })
   // Dispatch Hook
@@ -17,5 +17,5 @@ export const store = configureStore({
 
   export {
     uiActions,
-    editorActions,
+    gameActions,
   }

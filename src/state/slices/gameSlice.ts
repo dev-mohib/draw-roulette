@@ -1,0 +1,94 @@
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { CanvasType, EditorStateType, GameStatus, TimeOptions } from "src/types/state";
+import { mockData } from './mockData'
+
+const initialState : EditorStateType  = {
+    activeCanvas : 0,
+    canvasList  :mockData,
+    isLoading : true,
+    timeOptions : {label : "5 minutes", value : 500},
+    isActive : false,
+    gameStatus : "idle",
+    timeRemaining : 10,
+    isCanvasLoading : false,
+    id : Date.now().toString()
+   }
+export const gameSlice = createSlice({
+   initialState,
+    name : "gameSlice", 
+    reducers : {
+        setActiveCanvas : (state, action : PayloadAction<number>) =>{
+            state.activeCanvas = action.payload
+        },
+        startGame : (state, action : PayloadAction<{timeOption : TimeOptions, canvasList : CanvasType[]}>) => {
+            state.isActive = true
+            state.gameStatus = 'paused'
+            state.timeOptions = action.payload.timeOption
+            state.timeRemaining = action.payload.timeOption.value
+            state.canvasList = action.payload.canvasList
+        },
+        pushCanvas : (state, action : PayloadAction<CanvasType>) => {
+            if(state.canvasList.length < 8)
+            state.canvasList.push(action.payload)
+        },
+        popCanvas : (state) => {
+            if(state.canvasList.length > 1)
+            state.canvasList.pop()
+        },
+        setTimeOptions : (state, action : PayloadAction<TimeOptions>) => {
+            state.timeOptions = action.payload
+        },
+        setActive : (state) => {
+            state.isActive = true
+        },
+        unsetActive : (state) => {
+            state.isActive = false
+        },
+        decreaseTime : (state) => {
+            if(state.timeRemaining > 0){
+                state.timeRemaining -= 1
+            }
+        },
+        setGameStatus : (state, action : PayloadAction<GameStatus>)=>{
+            state.gameStatus = action.payload
+        },
+        setCanvasLoading : (state) => {
+            state.isCanvasLoading = true
+        },
+        unsetCanvasLoading : (state) => {
+            state.isCanvasLoading = false
+        },
+        setCanvasJson : (state, action : PayloadAction<any>) => {
+            state.canvasList[state.activeCanvas].canvasJson = action.payload
+        },
+        setIsLocked : (state) => {
+            state.canvasList[state.activeCanvas].history.isLocked = true
+        },
+        unsetIsLockedHistory : (state) => {
+            state.canvasList[state.activeCanvas].history.isLocked = false
+        },
+        pushUndo : (state, action : PayloadAction<any>) => {
+            if(!state.canvasList[state.activeCanvas].history.isLocked){
+                state.canvasList[state.activeCanvas].history.undo.push(action.payload)
+            }
+        },
+        popUndo : (state) => {
+            if(!state.canvasList[state.activeCanvas].history.isLocked){
+                state.canvasList[state.activeCanvas].history.undo.pop()
+            }
+        },
+        pushRedo : (state, action : PayloadAction<any>) => {
+            if(!state.canvasList[state.activeCanvas].history.isLocked){
+                state.canvasList[state.activeCanvas].history.redo.push(action.payload)
+            }
+        },
+        popRedo : (state) => {
+            if(!state.canvasList[state.activeCanvas].history.isLocked){
+                state.canvasList[state.activeCanvas].history.redo.pop()
+            }
+        }
+    }
+})
+
+const { actions : gameActions} = gameSlice
+export { gameActions }

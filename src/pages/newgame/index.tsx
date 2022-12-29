@@ -3,7 +3,7 @@ import { IoMdAdd, IoMdRemove} from 'react-icons/io'
 import { RiDeleteBinLine } from 'react-icons/ri'
 import { useNavigate } from 'react-router-dom'
 import { shuffle } from '../../utils/drawingSamples'
-import { editorActions, useAppDispatch, useAppSelector } from '@state/store'
+import { gameActions, useAppDispatch, useAppSelector } from '@state/store'
 import { CanvasType } from 'types/state'
 import Loader from '@components/loader'
 import { GoogleDriveResponse } from 'types/index'
@@ -23,15 +23,22 @@ const Index = () => {
   },[])
   const getGoogleDriveFiles = async() => {
       const response : GoogleDriveResponse[] = await fetch("https://drawroulet.kidsart.com.sg/api/index.php").then(res => res.json()).catch(e => {
-        console.log("Error : ", e)
+        console.error("Error : ", e)
         return []
       })
-      setGoogleImages(response)
+      setGoogleImages(shuffle(response))
   }
   
   const startGame = () => {
-      const canvasList : CanvasType[] = googleImages.slice(0, imageCount).map(image => ({canvasJson : null,isPainted : false, image}))
-      dispatch(editorActions.startGame({timeOption : timeDefaults[timeIndex],canvasList}))
+      const canvasList : CanvasType[] = googleImages.slice(0, imageCount).map(image => (
+        {
+          canvasJson : {version : '5.2.4', objects : []},
+          isPainted : false, 
+          image, 
+          history : { isLocked : true, redo : [], undo : []}
+        })
+      )
+      dispatch(gameActions.startGame({timeOption : timeDefaults[timeIndex],canvasList}))
       navigate("/gameplay")
   }
 
@@ -57,7 +64,7 @@ const Index = () => {
           {
             googleImages.length == 0 ? <div className='flex-c-c'><Loader /> </div>
             : 
-            <div className='flex flex-wrap justify-start self-center items-center'>
+            <div className='flex flex-wrap self-center items-center'>
             {
               googleImages.slice(0, imageCount).map((d, i) =><div key={i}  className='w-52 h-52 m-2 relative'>
                 {i+1 === imageCount && <RiDeleteBinLine

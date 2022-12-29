@@ -8,12 +8,12 @@ import OAuth from '@pages/authorize/OAuth';
 import Homepage from '@pages/homepage'
 import Gameplay from '@pages/gameplay'
 import NewGame from '@pages/newgame'
+import ResultPage from '@pages/result'
 const AppRoutes = () => {
     return(
     <BrowserRouter>
         <Routes>
             <Route path="/" element={<Homepage />} />
-            {/* <Route path="/draw" element={<Canvas />} /> */}
             <Route path="/login" element={<LoginPage />} />
             <Route path="/authorize" element={<Authorize />}/>
             <Route path='/callback' element={<Callback />}/>
@@ -21,6 +21,7 @@ const AppRoutes = () => {
             <Route path='/oauth' element={<OAuth />}  />
             <Route path='/gameplay' element={<Gameplay />}  />
             <Route path='/newgame' element={<NewGame />}  />
+            <Route path='/result' element={<ResultPage />}  />
             {/* <Route path="*" element={<NotFound />} /> */}
         </Routes>
     </BrowserRouter>
