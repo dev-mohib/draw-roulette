@@ -4,11 +4,12 @@ import { mockData } from './mockData'
 
 const initialState : EditorStateType  = {
     activeCanvas : 0,
-    canvasList  :mockData,
+    canvasList  : mockData,
     isLoading : true,
     timeOptions : {label : "5 minutes", value : 500},
     isActive : false,
     gameStatus : "idle",
+    name : 'Untitled Project', 
     timeRemaining : 10,
     isCanvasLoading : false,
     id : Date.now().toString()
@@ -20,9 +21,13 @@ export const gameSlice = createSlice({
         setActiveCanvas : (state, action : PayloadAction<number>) =>{
             state.activeCanvas = action.payload
         },
-        startGame : (state, action : PayloadAction<{timeOption : TimeOptions, canvasList : CanvasType[]}>) => {
+        setProjectName : (state, action : PayloadAction<string>) => {
+            state.name = action.payload
+        },
+        startGame : (state, action : PayloadAction<{timeOption : TimeOptions, canvasList : CanvasType[], name : string}>) => {
             state.isActive = true
             state.gameStatus = 'paused'
+            state.id = Date.now().toString()
             state.timeOptions = action.payload.timeOption
             state.timeRemaining = action.payload.timeOption.value
             state.canvasList = action.payload.canvasList
@@ -61,7 +66,7 @@ export const gameSlice = createSlice({
         setCanvasJson : (state, action : PayloadAction<any>) => {
             state.canvasList[state.activeCanvas].canvasJson = action.payload
         },
-        setIsLocked : (state) => {
+        setIsLockedHistory : (state) => {
             state.canvasList[state.activeCanvas].history.isLocked = true
         },
         unsetIsLockedHistory : (state) => {
@@ -86,6 +91,10 @@ export const gameSlice = createSlice({
             if(!state.canvasList[state.activeCanvas].history.isLocked){
                 state.canvasList[state.activeCanvas].history.redo.pop()
             }
+        },
+        setState : (state, action : PayloadAction<EditorStateType>) => {
+            state = action.payload
+            state.name = 'Name changed'
         }
     }
 })

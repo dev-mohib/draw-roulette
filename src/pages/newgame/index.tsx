@@ -13,6 +13,7 @@ const Index = () => {
   // const timeDefaults : timeDefaults[] = [{label : '2 minutes', value : 120},{label : '5 minutes', value : 500},{label : '10 minutes', value : 600},{label : '15 minutes', value : 900}]
   const [timeIndex, setTimeIndex] = useState(0)
   const [imageCount, setImageCount] = useState(3)
+  const [projectName, setPtojectName] = useState('')
   const [googleImages, setGoogleImages] = useState<GoogleDriveResponse[]>([])
   const dispatch = useAppDispatch()
   const navigate  = useNavigate()
@@ -22,6 +23,8 @@ const Index = () => {
       getGoogleDriveFiles()
   },[])
   const getGoogleDriveFiles = async() => {
+    const url = import.meta.env.VITE_API_URL
+    console.log({url})
       const response : GoogleDriveResponse[] = await fetch("https://drawroulet.kidsart.com.sg/api/index.php").then(res => res.json()).catch(e => {
         console.error("Error : ", e)
         return []
@@ -30,22 +33,23 @@ const Index = () => {
   }
   
   const startGame = () => {
-      const canvasList : CanvasType[] = googleImages.slice(0, imageCount).map(image => (
+      const canvasList : CanvasType[] = googleImages.slice(0, imageCount).map((image, index) => (
         {
-          canvasJson : {version : '5.2.4', objects : []},
+          canvasJson : {version : '5.2.4', objects : [], canvasIndex : index},
           isPainted : false, 
           image, 
           history : { isLocked : true, redo : [], undo : []}
         })
       )
-      dispatch(gameActions.startGame({timeOption : timeDefaults[timeIndex],canvasList}))
+      console.log({canvasList});
+      dispatch(gameActions.startGame({timeOption : timeDefaults[timeIndex], canvasList, name : projectName}))
       navigate("/gameplay")
   }
 
     return (
     <div className='bg-gray-100 h-screen w-full flex flex-col justify-between py-3 px-5 items-center'>
-        <div className=''>
-          <div className='flex text-white'>
+        <div className='w-full flex-c-c'>
+          <div className='flex text-white w-1/2 flex-r-c'>
               <button className='btn-primary' onClick={() => {
                   setTimeIndex(timeIndex > 0 ? timeIndex - 1 : 0)
               }}>
@@ -59,6 +63,9 @@ const Index = () => {
               </button>
           </div>
           <h1 className='text-center my-4 text-2xl font-bold'>Timer</h1>
+        <div className='w-1/2'>
+          <input onChange={e => setPtojectName(e.target.value)}   type="text" className="input w-full" placeholder="Project Name" required></input>
+        </div>
         </div>
         <div>
           {

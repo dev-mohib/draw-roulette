@@ -6,6 +6,7 @@ export type GameStatus =  'idle' | 'playing' | 'paused' | 'finished'
 export interface EditorStateType{
     isLoading : boolean,
     activeCanvas : number,
+    name : String,
     timeOptions :   TimeOptions,
     canvasList : CanvasType[],
     gameStatus : GameStatus,

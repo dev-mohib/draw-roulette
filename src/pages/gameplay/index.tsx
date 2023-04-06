@@ -1,19 +1,22 @@
-import React from 'react'
+import React,  { useState, useEffect } from 'react'
 import { gameActions, useAppDispatch, useAppSelector } from '@state/store'
-import { mockData } from './mock'
 import { GrNext, GrPrevious, GrView, GrUndo, GrRedo } from 'react-icons/gr'
 import { HiPlay, HiPause } from 'react-icons/hi'
 import { TbReportAnalytics } from 'react-icons/tb'
-import Canvas from './Canvas'
+import useCanvas from './Canvas'
 import { useNavigate } from 'react-router-dom'
 const Index = () => {
-  const { canvasList, timeOptions, activeCanvas, timeRemaining, gameStatus} = useAppSelector(s => s.gameSlice)
-  const [isReportView, setReportView] = React.useState(false)
+  const { gameSlice } = useAppSelector(s => s)
+  const { Canvas, Undo, Redo} = useCanvas()
+  const { canvasList, timeOptions, activeCanvas, timeRemaining, gameStatus, id } = gameSlice
+  const [isReportView, setReportView] = useState(false)
+  var projects : any[] = []
+
   const [time, setTime] = React.useState("00:00") 
   const dispatch = useAppDispatch()
   const navigate = useNavigate()
   var interval : any
-React.useEffect(() => {
+useEffect(() => {
   if(gameStatus == 'playing'){
     interval = setInterval(
       () => {
@@ -36,13 +39,31 @@ React.useEffect(() => {
   return () => clearInterval(interval)
 },[timeRemaining, gameStatus])  
 
-React.useEffect(() => {
+useEffect(() => {
   const time = new Date(timeRemaining * 1000).toISOString().substring(14, 19)
   setTime(time)
 },[timeRemaining])
 
-const viewReport = () => {
+useEffect(() => {
+  window.onbeforeunload = null
+  window.onbeforeunload = function() {
+  saveChanges()
+    return 'You have unsaved changes!';
+}
+return () => {
+  window.onbeforeunload = null
+}
+},[gameSlice])
 
+const saveChanges = () => {
+  projects = JSON.parse(localStorage.getItem('projects')??'[]')
+  const isFound = projects.find(p => p.id == id)
+  if(isFound){
+    localStorage.removeItem('projects')
+    localStorage.setItem('projects', JSON.stringify(projects.map(p => p.id == id ? {...p, ...gameSlice} : p)))
+  }else {
+    localStorage.setItem('projects', JSON.stringify([...projects, gameSlice]))
+  }
 }
 
 const ResultBody = () => {
@@ -57,21 +78,29 @@ const ResultBody = () => {
   )
 }
 
-const handleUndo = () => {}
+const handleUndo = () => {
+  const history = canvasList[activeCanvas].history.undo 
+  if(history.length > 0){
+    dispatch(gameActions.setIsLockedHistory())
+    const content = history[history.length - 2]
+    dispatch(gameActions.popUndo())
+    dispatch(gameActions.pushRedo(content))
+  }
+}
 const handleRedo = () =>{}
   return ( 
     <>
     <div className='h-screen w-screen orientation'>
         <div className='flex-r-between bg-gray-200 relative side'>
           <GrPrevious onClick={() => dispatch(gameActions.setActiveCanvas(activeCanvas > 0  ? activeCanvas - 1 : 0))} className='p-3 bg-gray-400 active:bg-gray-300' size={40}/>
-          <img src={mockData[activeCanvas].image.thumbnailLink} referrerPolicy='no-referrer' className='landscape:w-full portrait:h-full object-cover'/>
+          <img src={canvasList[activeCanvas].image.thumbnailLink} referrerPolicy='no-referrer' className='landscape:w-full portrait:h-full object-cover'/>
           <div className='h-full flex-c-c relative'>
             <div className='bg-black opacity-40 p-1 flex-r-c text-white absolute top-0 right-0  '>
-              <GrUndo size={40} className='m-1 active:text-blue-400' />
-              <GrRedo size={40} className='m-1 active:text-blue-400' />
+              <Undo />
+              <Redo />
             </div>
-            <GrNext onClick={() => dispatch(gameActions.setActiveCanvas(activeCanvas < mockData.length -1 ? activeCanvas + 1 : activeCanvas))}  className='p-3 bg-gray-400 active:bg-gray-300' size={40}/>
-          </div> 
+            <GrNext onClick={() => dispatch(gameActions.setActiveCanvas(activeCanvas < canvasList.length -1 ? activeCanvas + 1 : activeCanvas))}  className='p-3 bg-gray-400 active:bg-gray-300' size={40}/>
+          </div>
         </div>
         <div className='border-2 border-black side'>
           <Canvas />
@@ -90,7 +119,7 @@ const handleRedo = () =>{}
         }
       </div>
       <div className='absolute top-20 left-0 h-7  bg-black px-10 py-3 flex-r-c'>
-        <button onClick={() => navigate('/result')}  className='button'>Modal</button>
+        <button onClick={() => navigate('/result')}>View Report</button>
       </div>
     </div>
       {

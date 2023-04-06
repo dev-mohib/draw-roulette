@@ -5,6 +5,7 @@ interface UiInterface{
     token : string,
     orientation : "landscape-primary" | "portrait-primary"
 }
+
 var orientation = (screen.orientation || {}).type 
 console.log(orientation)
 const initialState : UiInterface  = {
