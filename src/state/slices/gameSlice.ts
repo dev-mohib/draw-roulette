@@ -1,8 +1,9 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { CanvasType, EditorStateType, GameStatus, TimeOptions } from "src/types/state";
+import { CanvasType, GameStateType, GameStatus, TimeOptions } from "src/types/state";
 import { mockData } from './mockData'
+import { GoogleDriveResponse } from "types/index";
 
-const initialState : EditorStateType  = {
+const initialState : GameStateType  = {
     activeCanvas : 0,
     canvasList  : mockData,
     isLoading : true,
@@ -12,7 +13,8 @@ const initialState : EditorStateType  = {
     name : 'Untitled Project', 
     timeRemaining : 10,
     isCanvasLoading : false,
-    id : Date.now().toString()
+    id : Date.now().toString(),
+    googleImages : []
    }
 export const gameSlice = createSlice({
    initialState,
@@ -92,9 +94,12 @@ export const gameSlice = createSlice({
                 state.canvasList[state.activeCanvas].history.redo.pop()
             }
         },
-        setState : (state, action : PayloadAction<EditorStateType>) => {
+        setState : (state, action : PayloadAction<GameStateType>) => {
             state = action.payload
             state.name = 'Name changed'
+        },
+        setGoogleImages : (state, action : PayloadAction<GoogleDriveResponse[]>) => {
+            state.googleImages = action.payload
         }
     }
 })

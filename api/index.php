@@ -16,7 +16,8 @@ use Google\Service\Drive;
  * Returns an authorized API client.
  * @return Client the authorized client object
  */
-$folderId = "1KYiJN84-uQ-U2s-zvsvcGRFaKEPlKzlk";
+
+$folderId = "1dwvD6yLgQJ8FZyoz6WEPlTrlnXuQdbIK";
  function Redirect($url, $permanent = false)
 {
     header('Location: ' . $url, true, $permanent ? 301 : 302);
@@ -26,8 +27,8 @@ $folderId = "1KYiJN84-uQ-U2s-zvsvcGRFaKEPlKzlk";
 function getClient()
 {
     $client = new Client();
-    $application_creds = __DIR__ . '/draw-roulette-34eca53fb3ef.json';
-    $client->setApplicationName('Google Drive API PHP Quickstart');
+    $application_creds = __DIR__ . '/draw-roulette-service-account.json';
+    $client->setApplicationName('Google Drive API Draw Roulette');
     $client->setScopes('https://www.googleapis.com/auth/drive');
     $client->setAuthConfig($application_creds);
     
@@ -46,6 +47,7 @@ $optParams = array(
 $result = $service->files->listFiles($optParams);
 // $object = (object) array_filter((array) $result);
 $files = array();
+
 if(count($result->getFiles()) == 0){
     print([]);
 }else {

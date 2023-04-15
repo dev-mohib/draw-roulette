@@ -9,7 +9,7 @@ const MyCanvas = () => {
     const [isLoaded, setLoaded] = useState(false)
     const { orientation } = useAppSelector(s => s.uiSlice)
     const dispatch = useAppDispatch() 
-    const { canvasList, timeOptions, activeCanvas, timeRemaining, gameStatus, isCanvasLoading } = useAppSelector(s => s.gameSlice)
+    const { canvasList, timeOptions, activeCanvas, gameStatus, isCanvasLoading } = useAppSelector(s => s.gameSlice)
 
     const loadCanvas = () => {
       const _canvas = new fabric.Canvas('myCanvas', {
@@ -45,10 +45,10 @@ const MyCanvas = () => {
         try {
           canvas.__eventListeners["object:added"] = [];
         } catch (error) {
-          console.log(error)
+          // console.log(error)
+          console.log("error -> object:added")
         }
         canvas.on('object:added', (e) => {
-          
           if(!isCanvasLoading){
             dispatch(gameActions.setCanvasJson(canvas.toJSON()))
           }
@@ -61,9 +61,12 @@ useEffect(() => {
   if(isLoaded){
     const json = canvasList[activeCanvas].canvasJson
     canvas.loadFromJSON(json, () => {
+      // console.log("canvas json loaded")
     })
   }
 },[activeCanvas, isLoaded])
+
+useEffect(() => {console.log("test canvas")},[])
 
   return (<canvas id='myCanvas'></canvas>)
 }
@@ -71,8 +74,9 @@ useEffect(() => {
 const Canvas = () => {
   const Undo = () => <GrUndo size={40} className='m-1 active:text-blue-400' />
   const Redo  = () => <GrRedo size={40} className='m-1 active:text-blue-400' /> 
-  const Canvas = ()=> (<div><MyCanvas /></div>)
 
-  return {Undo, Redo, Canvas}
+  return { Undo, Redo }
 }
+
+export { MyCanvas }
 export default Canvas

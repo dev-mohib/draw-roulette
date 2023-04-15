@@ -23,12 +23,12 @@ const Index = () => {
       getGoogleDriveFiles()
   },[])
   const getGoogleDriveFiles = async() => {
-    const url = import.meta.env.VITE_API_URL
-    console.log({url})
-      const response : GoogleDriveResponse[] = await fetch("https://drawroulet.kidsart.com.sg/api/index.php").then(res => res.json()).catch(e => {
+    const url = import.meta.env.VITE_API_URL + '/index.php'
+      const response : GoogleDriveResponse[] = await fetch(url).then(res => res.json()).catch(e => {
         console.error("Error : ", e)
         return []
       })
+      // dispatch(gameActions.setGoogleImages(shuffle(response)))
       setGoogleImages(shuffle(response))
   }
   
@@ -41,7 +41,6 @@ const Index = () => {
           history : { isLocked : true, redo : [], undo : []}
         })
       )
-      console.log({canvasList});
       dispatch(gameActions.startGame({timeOption : timeDefaults[timeIndex], canvasList, name : projectName}))
       navigate("/gameplay")
   }
@@ -82,7 +81,11 @@ const Index = () => {
             }
             <div onTouchEnd={() => {
               setImageCount(imageCount < 6  ? imageCount + 1 : 6)
-            }} className='flex-r-c w-52 h-52 bg-gray-400 rounded hover:bg-gray-200 cursor-pointer active:bg-blue-400'>
+            }} 
+            onClick={() => {
+              setImageCount(imageCount < 6  ? imageCount + 1 : 6)
+            }}
+            className='flex-r-c w-52 h-52 bg-gray-400 rounded hover:bg-gray-200 cursor-pointer active:bg-blue-400'>
               <IoMdAdd size={40}  />
             </div>
         </div>
@@ -94,6 +97,12 @@ const Index = () => {
             setGoogleImages([...newList])
             }} data-modal-toggle="defaultModal" type="button" className="text-gray-500 bg-white hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-blue-300 rounded-lg border border-gray-200 text-sm font-medium px-5 py-2.5 hover:text-gray-900 focus:z-10 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-500 dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-gray-600">Shuffle</button>
           <button onClick={startGame}  className='btn-primary ml-3'>Start Game</button>
+          <button onClick={() => navigate("/print", {state : 
+            {
+            googleImages : googleImages.slice(0, imageCount),
+            time : timeDefaults[timeIndex].label,
+            title : projectName
+            }})}  className='btn-primary ml-3'>Print</button>
         </div>
     </div>
   )

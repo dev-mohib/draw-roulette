@@ -9,6 +9,7 @@ import Homepage from '@pages/homepage'
 import Gameplay from '@pages/gameplay'
 import NewGame from '@pages/newgame'
 import ResultPage from '@pages/result'
+import PrintView from '@pages/print'
 const AppRoutes = () => {
     return(
     <BrowserRouter>
@@ -22,6 +23,7 @@ const AppRoutes = () => {
             <Route path='/gameplay' element={<Gameplay />}  />
             <Route path='/newgame' element={<NewGame />}  />
             <Route path='/result' element={<ResultPage />}  />
+            <Route path='/print' element={<PrintView />}  />
             {/* <Route path="*" element={<NotFound />} /> */}
         </Routes>
     </BrowserRouter>

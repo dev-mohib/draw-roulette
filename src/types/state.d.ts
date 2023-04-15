@@ -3,7 +3,7 @@ export const timeOptions = [{ label : '2 minutes', value : 120}, { label : '5 mi
 
 
 export type GameStatus =  'idle' | 'playing' | 'paused' | 'finished'
-export interface EditorStateType{
+export interface GameStateType{
     isLoading : boolean,
     activeCanvas : number,
     name : String,
@@ -13,7 +13,8 @@ export interface EditorStateType{
     isActive : boolean,
     timeRemaining : number,
     isCanvasLoading : boolean,
-    id : string
+    id : string,
+    googleImages : GoogleDriveResponse[]
 }
 
 export interface CanvasType {

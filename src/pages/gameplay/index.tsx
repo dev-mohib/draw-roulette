@@ -4,15 +4,16 @@ import { GrNext, GrPrevious, GrView, GrUndo, GrRedo } from 'react-icons/gr'
 import { HiPlay, HiPause } from 'react-icons/hi'
 import { TbReportAnalytics } from 'react-icons/tb'
 import useCanvas from './Canvas'
+import { MyCanvas } from './Canvas'
 import { useNavigate } from 'react-router-dom'
 const Index = () => {
   const { gameSlice } = useAppSelector(s => s)
-  const { Canvas, Undo, Redo} = useCanvas()
+  // const { Undo, Redo} = useCanvas()
   const { canvasList, timeOptions, activeCanvas, timeRemaining, gameStatus, id } = gameSlice
   const [isReportView, setReportView] = useState(false)
   var projects : any[] = []
 
-  const [time, setTime] = React.useState("00:00") 
+  // const [time, setTime] = React.useState("00:00") 
   const dispatch = useAppDispatch()
   const navigate = useNavigate()
   var interval : any
@@ -39,10 +40,10 @@ useEffect(() => {
   return () => clearInterval(interval)
 },[timeRemaining, gameStatus])  
 
-useEffect(() => {
-  const time = new Date(timeRemaining * 1000).toISOString().substring(14, 19)
-  setTime(time)
-},[timeRemaining])
+// useEffect(() => {
+//   const time = new Date(timeRemaining * 1000).toISOString().substring(14, 19)
+//   setTime(time)
+// },[timeRemaining])
 
 useEffect(() => {
   window.onbeforeunload = null
@@ -95,15 +96,15 @@ const handleRedo = () =>{}
           <GrPrevious onClick={() => dispatch(gameActions.setActiveCanvas(activeCanvas > 0  ? activeCanvas - 1 : 0))} className='p-3 bg-gray-400 active:bg-gray-300' size={40}/>
           <img src={canvasList[activeCanvas].image.thumbnailLink} referrerPolicy='no-referrer' className='landscape:w-full portrait:h-full object-cover'/>
           <div className='h-full flex-c-c relative'>
-            <div className='bg-black opacity-40 p-1 flex-r-c text-white absolute top-0 right-0  '>
+            {/* <div className='bg-black opacity-40 p-1 flex-r-c text-white absolute top-0 right-0  '>
               <Undo />
               <Redo />
-            </div>
+            </div> */}
             <GrNext onClick={() => dispatch(gameActions.setActiveCanvas(activeCanvas < canvasList.length -1 ? activeCanvas + 1 : activeCanvas))}  className='p-3 bg-gray-400 active:bg-gray-300' size={40}/>
           </div>
         </div>
         <div className='border-2 border-black side'>
-          <Canvas />
+          <MyCanvas />
         </div>
     </div>
     <div className='flex-r-between absolute top-3 -left-2 py-3 bg-black opacity-40 text-white rounded-lg z-50'>
@@ -111,16 +112,21 @@ const handleRedo = () =>{}
         <h2> Drawing {activeCanvas + 1}</h2>
       </div>
       <div className='flex-r-between pr-6'>
-        <b className='mx-4'>{time}</b>
+        <b className='mx-4'>{
+            new Date(timeRemaining * 1000).toISOString().substring(14, 19)
+        }</b>
         {
           (gameStatus == 'paused' || gameStatus == 'idle') ? <HiPlay onClick={() => dispatch(gameActions.setGameStatus('playing'))}  size={20} color="green"/> : 
            gameStatus == 'playing' ? <HiPause onClick={() =>dispatch(gameActions.setGameStatus('paused'))}  size={20} color="orange"/> : 
            gameStatus == 'finished' ? <TbReportAnalytics size={20} className='text-blue-400' /> : null
         }
       </div>
+      {
+      gameStatus == 'finished'&&
       <div className='absolute top-20 left-0 h-7  bg-black px-10 py-3 flex-r-c'>
         <button onClick={() => navigate('/result')}>View Report</button>
       </div>
+      }
     </div>
       {
         isReportView && <Modal body={<ResultBody />} header={"Result"} isShow={isReportView} setShow={setReportView} actions={<button className='btn btn-primary'>Generate PDF</button>} />
@@ -154,4 +160,5 @@ const Modal =({header, body, actions, isShow, setShow } : {header : String, body
     </div>
   </div>)
 }
+
 export default Index
