@@ -17,13 +17,7 @@ use Google\Service\Drive;
  * @return Client the authorized client object
  */
 
-$folderId = "1dwvD6yLgQJ8FZyoz6WEPlTrlnXuQdbIK";
- function Redirect($url, $permanent = false)
-{
-    header('Location: ' . $url, true, $permanent ? 301 : 302);
-    exit();
-}
-
+$folderId =$_GET['id']?? "1dwvD6yLgQJ8FZyoz6WEPlTrlnXuQdbIK";
 function getClient()
 {
     $client = new Client();
