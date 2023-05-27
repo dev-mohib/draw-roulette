@@ -12,7 +12,7 @@ const Index = () => {
 
   return ( 
      <>
-      <div className='fixed top-0 left-0 right-0 z-50  bg-slate-300 w-full flex-r-between p-2'>
+      <div className='fixed top-0 left-0 right-0 z-50  bg-slate-300 w-full flex-r-b p-2'>
         <h1>Result</h1>
         <div>
           {/* <button onClick={()=>window.print()}  className='btn-primary mx-1'>Print</button> */}

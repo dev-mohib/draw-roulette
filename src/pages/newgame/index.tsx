@@ -9,6 +9,7 @@ import Loader from '@components/loader'
 import { GoogleDriveResponse } from 'types/index'
 import { timeDefaults } from 'src/utils/defaults'
 import Dropdown from '@components/dropdown'
+import Menu from '@components/menu'
 
 const Index = () => {
   // const timeDefaults : timeDefaults[] = [{label : '2 minutes', value : 120},{label : '5 minutes', value : 500},{label : '10 minutes', value : 600},{label : '15 minutes', value : 900}]
@@ -20,6 +21,7 @@ const Index = () => {
   const dispatch = useAppDispatch()
   const navigate  = useNavigate()
   const { category }  = useAppSelector(s => s.gameSlice)
+  const { theme }  = useAppSelector(s => s.uiSlice)
   
   
   useEffect(() => {
@@ -51,71 +53,82 @@ const Index = () => {
   }
 
     return (
-    <div className='bg-gray-100 h-screen w-full flex flex-col justify-between py-3 px-5 items-center'>
-        <div className='w-full flex-c-c'>
-          <div className='flex text-white w-1/2 flex-r-c'>
-              <button className='btn-primary' onClick={() => {
-                  setTimeIndex(timeIndex > 0 ? timeIndex - 1 : 0)
-              }}>
-              <IoMdRemove />
-              </button>
-              <div className='btn-primary cursor-default mx-1'>{timeDefaults[timeIndex].label}</div>
-              <button className='btn-primary' onClick={() => {
-                      setTimeIndex(timeIndex < timeDefaults.length - 1 ? timeIndex + 1 : timeDefaults.length - 1)
-                  }}>
-                  <IoMdAdd />
-              </button>
-          </div>
-          <h1 className='text-center my-4 text-2xl font-bold'>Timer</h1>
-        {/* <div className='w-1/2'>
-          <input onChange={e => setPtojectName(e.target.value)}   type="text" className="input w-full" placeholder="Project Name" required></input>
-        </div> */}
-        <div className='w-full flex justify-end pr-16'>
-          <Dropdown />
-        </div>
-        </div>
-        <div>
-          {
-            googleImages.length == 0 || isFetching ? 
-            <div className='flex-c-c'>
-              {/* <Loader />  */}
-              <div className='loader loader--circularSquare'></div>
+    <div data-theme={theme}>
+      <Menu />
+      <div className='h-screen w-full flex flex-col justify-between py-3 px-5 items-center pt-20'>
+          <div className='w-full flex-c-c'>
+            <div className=' text-white w-1/2 flex-r-c'>
+              <div className='flex'>
+                <button className='p-3 bg-primary text-base-100 text-lg rounded-tl-2xl rounded-bl-2xl click-bounce' onClick={() => {
+                    setTimeIndex(timeIndex > 0 ? timeIndex - 1 : 0)
+                }}>
+                <IoMdRemove />
+                </button>
+                <div className=' mx-1 py-3 w-28 text-center bg-primary text-base-100 text-lg'>{timeDefaults[timeIndex].label}</div>
+                <button className='p-3 bg-primary text-base-100 text-lg rounded-tr-2xl rounded-br-2xl click-bounce' onClick={() => {
+                        setTimeIndex(timeIndex < timeDefaults.length - 1 ? timeIndex + 1 : timeDefaults.length - 1)
+                    }}>
+                    <IoMdAdd />
+                </button>
               </div>
-            : 
-            <div className='flex flex-wrap self-center items-center'>
-            {
-              googleImages.slice(0, imageCount).map((d, i) =><div key={i}  className='w-52 h-52 m-2 relative'>
-                {i+1 === imageCount && <RiDeleteBinLine
-                  onClick={() => setImageCount(imageCount > 1  ? imageCount - 1 : 1)}
-                   className='absolute top-1 right-1 active:text-blue-500 cursor-pointer' size={20}  />}
-                <img  src={d.thumbnailLink} alt={d.name} className="w-52 h-52" referrerPolicy="no-referrer"/>
-              </div>)
-            }
-            <div onTouchEnd={() => {
-              setImageCount(imageCount < 6  ? imageCount + 1 : 6)
-            }} 
-            onClick={() => {
-              setImageCount(imageCount < 6  ? imageCount + 1 : 6)
-            }}
-            className='flex-r-c w-52 h-52 bg-gray-400 rounded hover:bg-gray-200 cursor-pointer active:bg-blue-400'>
-              <IoMdAdd size={40}  />
             </div>
-        </div>
-          }
-        </div>
-        <div className='w-full self-end flex flex-row justify-end'>
-          <button onClick={() => {
-            const newList = shuffle(googleImages)
-            setGoogleImages([...newList])
-            }} data-modal-toggle="defaultModal" type="button" className="text-gray-500 bg-white hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-blue-300 rounded-lg border border-gray-200 text-sm font-medium px-5 py-2.5 hover:text-gray-900 focus:z-10 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-500 dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-gray-600">Shuffle</button>
-          <button onClick={startGame}  className='btn-primary ml-3'>Start Game</button>
-          <button onClick={() => navigate("/print", {state : 
+            <h1 className='text-center my-4 text-2xl font-bold'>Timer</h1>
+          {/* <div className='w-1/2'>
+            <input onChange={e => setPtojectName(e.target.value)}   type="text" className="input w-full" placeholder="Project Name" required></input>
+          </div> */}
+          <div className='w-full flex justify-end pr-16'>
+            <Dropdown />
+          </div>
+            </div>
+          <div>
             {
-            googleImages : googleImages.slice(0, imageCount),
-            time : timeDefaults[timeIndex].label,
-            title : projectName
-            }})}  className='btn-primary ml-3'>Print</button>
-        </div>
+              googleImages.length == 0 || isFetching ? 
+              <div className='flex-c-c'>
+                {/* <Loader />  */}
+                <div className='loader loader--circularSquare'></div>
+                </div>
+              : 
+              <div className='flex flex-wrap self-center items-center'>
+              {
+                googleImages.slice(0, imageCount).map((d, i) =><div key={i}  className='w-52 h-52 m-2 relative'>
+                  {i+1 === imageCount && <RiDeleteBinLine
+                    onClick={() => setImageCount(imageCount > 1  ? imageCount - 1 : 1)}
+                    className='absolute top-1 right-1 active:text-blue-500 cursor-pointer' size={20}  />}
+                  <img  src={d.thumbnailLink} alt={d.name} className="w-52 h-52" referrerPolicy="no-referrer"/>
+                </div>)
+              }
+              <div onTouchEnd={() => {
+                setImageCount(imageCount < 6  ? imageCount + 1 : 6)
+              }} 
+              onClick={() => {
+                setImageCount(imageCount < 6  ? imageCount + 1 : 6)
+              }}
+              className='flex-r-c w-52 h-52 bg-gray-400 rounded hover:bg-gray-200 cursor-pointer active:bg-blue-400'>
+                <IoMdAdd size={40}  />
+              </div>
+          </div>
+            }
+          </div>
+          <div className='self-end flex justify-end px-2'>
+            <button onClick={() => {
+              setFetching(true)
+              const newList = shuffle(googleImages)
+              setTimeout(() => {
+                setGoogleImages([...newList])
+                setFetching(false)
+              },1350)
+              }} data-modal-toggle="defaultModal" type="button" className="btn btn-secondary mr-3">Shuffle</button>
+              <div className='mx-2'> 
+                <button onClick={startGame}  className='btn btn-primary'>Start Game</button>
+              </div>
+            <button onClick={() => navigate("/print", {state : 
+              {
+              googleImages : googleImages.slice(0, imageCount),
+              time : timeDefaults[timeIndex].label,
+              title : projectName
+              }})}  className='btn btn-primary ml-3 mx-0.5'>Print</button>
+          </div>
+      </div>
     </div>
   )
 }

@@ -40,3 +40,26 @@
     transform: rotate(1turn);
   }
 }
+
+
+.click-bounce {
+  animation: normal  0.4s linear;
+}
+
+@keyframes bounce {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(0.8);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+.click-bounce:active{
+  /* transform: translateY(3px); */
+  transform: scale(0.9);
+
+}

@@ -2,17 +2,17 @@
 @tailwind components;
 @tailwind utilities;
 
-.button{
+/* .button{
     @apply text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5  dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800
 } 
 
 .btn-primary{
     @apply  text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5  dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800
-} 
+}  */
 
-.btn-default{
+/* .btn-default{
     @apply  text-white bg-gray-400 hover:bg-gray-500 focus:ring-4 focus:outline-none focus:ring-gray-300 font-medium rounded-lg text-sm px-5 py-2.5  dark:bg-gray-600 dark:hover:bg-gray-700 dark:focus:ring-gray-800
-}
+} */
 
 .flex-r-c{
     @apply flex flex-row justify-center items-center 
@@ -20,11 +20,11 @@
 .flex-c-c{
     @apply flex flex-col justify-center items-center
 }
-.flex-r-between{
+.flex-r-b{
     @apply flex flex-row justify-between items-center
 }
 
-.flex-c-between{
+.flex-c-b{
     @apply flex flex-col justify-between items-center
 }
 
@@ -38,6 +38,6 @@
 .h1{
     @apply flex items-center text-5xl font-extrabold dark:text-white
 }
-.input{
+/* .input{
     @apply bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500
-}
+} */

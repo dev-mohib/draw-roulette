@@ -99,7 +99,7 @@ const handleRedo = () =>{}
   return ( 
     <>
     <div className='h-screen w-screen orientation'>
-        <div className='flex-r-between bg-gray-200 relative side'>
+        <div className='flex-r-b bg-gray-200 relative side'>
           <GrPrevious onClick={() => dispatch(gameActions.setActiveCanvas(activeCanvas > 0  ? activeCanvas - 1 : 0))} className='p-3 bg-gray-400 active:bg-gray-300' size={40}/>
           <img src={canvasList[activeCanvas].image.thumbnailLink} referrerPolicy='no-referrer' className='landscape:w-full portrait:h-full object-cover'/>
           <div className='h-full flex-c-c relative'>
@@ -114,11 +114,11 @@ const handleRedo = () =>{}
           <MyCanvas />
         </div>
     </div>
-    <div className='flex-r-between absolute top-3 -left-2 py-3 bg-black opacity-40 text-white rounded-lg z-50'>
+    <div className='flex-r-b absolute top-3 -left-2 py-3 bg-black opacity-40 text-white rounded-lg z-50'>
       <div className='mr-5 ml-3'>
         <h2> Drawing {activeCanvas + 1}</h2>
       </div>
-      <div className='flex-r-between pr-6'>
+      <div className='flex-r-b pr-6'>
         <b className='mx-4'>{
             new Date(timeRemaining * 1000).toISOString().substring(14, 19)
         }</b>
