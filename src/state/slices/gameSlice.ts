@@ -14,7 +14,11 @@ const initialState : GameStateType  = {
     timeRemaining : 10,
     isCanvasLoading : false,
     id : Date.now().toString(),
-    googleImages : []
+    googleImages : [],
+    category : {
+        title : 'Halloween',
+        id : '1m8cwRZCvVgc_5L32ES8Xee3KxUx0vtxe'
+    }
    }
 export const gameSlice = createSlice({
    initialState,
@@ -100,6 +104,10 @@ export const gameSlice = createSlice({
         },
         setGoogleImages : (state, action : PayloadAction<GoogleDriveResponse[]>) => {
             state.googleImages = action.payload
+        },
+        setCategory : (state, action : PayloadAction<any>) => {
+            state.category.title = action.payload.title??''
+            state.category.id = action.payload.id??''
         }
     }
 })

@@ -2,15 +2,15 @@ import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useAppDispatch } from '@state/store'
 import { gameActions } from '@state/slices/gameSlice'
-import { EditorStateType } from 'types/state'
+import { GameStateType } from 'types/state'
 
 
 const Index = () => {
     const navigate = useNavigate()
-    const [projects, setProjects] = useState<EditorStateType[]>([])
+    const [projects, setProjects] = useState<GameStateType[]>([])
     const data : String[] = ['bg-red-500', 'bg-green-300', 'bg-blue-400', 'bg-red-500', 'bg-green-600', 'bg-blue-700', 'bg-red-600', 'bg-green-700', 'bg-blue-700']
    useEffect(() => {
-    const history : EditorStateType[] = JSON.parse(localStorage.getItem('projects')??'[]')
+    const history : GameStateType[] = JSON.parse(localStorage.getItem('projects')??'[]')
    setProjects(history)
    },[])
     return (
@@ -26,7 +26,7 @@ const Index = () => {
     </div>
   )
 }
-const Project = ({project} : {project : EditorStateType}) => {
+const Project = ({project} : {project : GameStateType}) => {
     // const split  = color.split('-')
     // const hover = (parseInt(split[2])) - 100 //hover:${split[0]}-${split[1]}-${hover}
     const dispatch = useAppDispatch()

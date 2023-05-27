@@ -48,13 +48,20 @@ useEffect(() => {
 useEffect(() => {
   window.onbeforeunload = null
   window.onbeforeunload = function() {
-  saveChanges()
+  // saveChanges()
     return 'You have unsaved changes!';
 }
+
 return () => {
   window.onbeforeunload = null
 }
 },[gameSlice])
+
+useEffect(() => {
+  setTimeout(() => {
+    dispatch(gameActions.setGameStatus('playing'))
+},500)
+},[])
 
 const saveChanges = () => {
   projects = JSON.parse(localStorage.getItem('projects')??'[]')

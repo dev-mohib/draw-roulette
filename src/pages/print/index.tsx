@@ -13,12 +13,15 @@ const PrintView = () => {
 
   
   const ImageView = ({image} : any) => {
-    return (<div className=' border border-black'>
+    return (<div className=' border border-black m-0.5'>
         <img src={image} 
         // className='w-24 h-24'
         style={{
-          width: '10vh',
-          height: '10vh'
+          maxWidth: '10vw',
+          maxHeight: '10vw',
+          // width: '2vh'
+          minWidth : '73px',
+          minHeight : '73px'
         }}
          />
     </div>)
@@ -32,20 +35,20 @@ const PrintView = () => {
   }else
   return (
     <div className='h-screen w-full'>
-      <div className='h-1/3 border border-black w-full flex flex-col  justify-center items-center px-10'>
-      <div className='w-1/2 mb-5'>
-        <h1 className='font-bold text-lg'>{location.state.title}</h1>
-        <h1>Time : {location.state.time}</h1>
-      </div>
-        <div className='border-2 border-black flex w-1/2 justify-start flex-wrap p-0.5'>
+      <div className='h-1/4 border border-black w-full flex flex-col justify-center items-center sm:px-0 md:px-0 lg:px-10 xl:px-16'>
+        <div className='w-full  lg:w-2/3 xl:w-2/3'>
+          {/* <h1 className='font-bold text-lg'>{location.state.title}</h1> */}
+          <h1 className='text-left'>Time : {location.state.time}</h1>
+        </div>
+        <div className=' border-black flex w-full  lg:w-2/3 xl:w-2/3 justify-start flex-wrap p-0.5'>
           { 
             location.state.googleImages.map((image : any) => <ImageView key={image?.id} image={image.thumbnailLink} />)
           }
         </div>
       </div>
-      <div className='h-2/3  w-full flex flex-col justify-between border border-black px-10'>
+      <div className='h-3/4  w-full flex flex-col justify-between  border-black px-10'>
         <div className='w-full flex justify-center h-full'>
-          <div className='bg-white border-2 w-1/2 portrait:w-full h-4/5 border-black mt-10'>
+          <div className='bg-white w-1/2 portrait:w-full h-4/5 border-black mt-10'>
            
           </div>
         </div>

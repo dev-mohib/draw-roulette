@@ -14,7 +14,11 @@ export interface GameStateType{
     timeRemaining : number,
     isCanvasLoading : boolean,
     id : string,
-    googleImages : GoogleDriveResponse[]
+    googleImages : GoogleDriveResponse[],
+    category : {
+      title : string,
+      id : string
+    }
 }
 
 export interface CanvasType {

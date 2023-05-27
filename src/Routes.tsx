@@ -14,7 +14,7 @@ const AppRoutes = () => {
     return(
     <BrowserRouter>
         <Routes>
-            <Route path="/" element={<Homepage />} />
+            <Route path="/" element={<NewGame />} />
             <Route path="/login" element={<LoginPage />} />
             <Route path="/authorize" element={<Authorize />}/>
             <Route path='/callback' element={<Callback />}/>

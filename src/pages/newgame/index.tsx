@@ -8,28 +8,33 @@ import { CanvasType } from 'types/state'
 import Loader from '@components/loader'
 import { GoogleDriveResponse } from 'types/index'
 import { timeDefaults } from 'src/utils/defaults'
+import Dropdown from '@components/dropdown'
 
 const Index = () => {
   // const timeDefaults : timeDefaults[] = [{label : '2 minutes', value : 120},{label : '5 minutes', value : 500},{label : '10 minutes', value : 600},{label : '15 minutes', value : 900}]
   const [timeIndex, setTimeIndex] = useState(0)
   const [imageCount, setImageCount] = useState(3)
   const [projectName, setPtojectName] = useState('')
+  const [isFetching, setFetching] = useState(true)
   const [googleImages, setGoogleImages] = useState<GoogleDriveResponse[]>([])
   const dispatch = useAppDispatch()
   const navigate  = useNavigate()
+  const { category }  = useAppSelector(s => s.gameSlice)
   
   
   useEffect(() => {
       getGoogleDriveFiles()
-  },[])
+  },[category])
   const getGoogleDriveFiles = async() => {
-    const url = import.meta.env.VITE_API_URL + '/index.php'
+    setFetching(true)
+    const url = import.meta.env.VITE_API_URL + '/index.php' + '?id=' + category.id
       const response : GoogleDriveResponse[] = await fetch(url).then(res => res.json()).catch(e => {
         console.error("Error : ", e)
         return []
       })
       // dispatch(gameActions.setGoogleImages(shuffle(response)))
       setGoogleImages(shuffle(response))
+      setFetching(false)
   }
   
   const startGame = () => {
@@ -62,13 +67,20 @@ const Index = () => {
               </button>
           </div>
           <h1 className='text-center my-4 text-2xl font-bold'>Timer</h1>
-        <div className='w-1/2'>
+        {/* <div className='w-1/2'>
           <input onChange={e => setPtojectName(e.target.value)}   type="text" className="input w-full" placeholder="Project Name" required></input>
+        </div> */}
+        <div className='w-full flex justify-end pr-16'>
+          <Dropdown />
         </div>
         </div>
         <div>
           {
-            googleImages.length == 0 ? <div className='flex-c-c'><Loader /> </div>
+            googleImages.length == 0 || isFetching ? 
+            <div className='flex-c-c'>
+              {/* <Loader />  */}
+              <div className='loader loader--circularSquare'></div>
+              </div>
             : 
             <div className='flex flex-wrap self-center items-center'>
             {
