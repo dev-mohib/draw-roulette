@@ -11,6 +11,7 @@ const Dropdown = () => {
         fetch(`${import.meta.env.VITE_API_URL}/dropdown.php`)
         .then(res => res.json())
         .then((data) => {
+            console.log({data})
             setList(data)
         })
         .catch(e => console.error({e}))
