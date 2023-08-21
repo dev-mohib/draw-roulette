@@ -16,8 +16,8 @@ use Google\Service\Drive;
  * Returns an authorized API client.
  * @return Client the authorized client object
  */
+$folderId = $_GET['id'];
 
-$folderId =$_GET['id']?? "1dwvD6yLgQJ8FZyoz6WEPlTrlnXuQdbIK";
 function getClient()
 {
     $client = new Client();
@@ -28,15 +28,17 @@ function getClient()
     
     return $client;
 }
-
+// print($folderId);
 $client = getClient();
 $service = new Drive($client);
+$allfoldersCondition = implode(' or ', array("'1m8cwRZCvVgc_5L32ES8Xee3KxUx0vtxe' in parents","'1gqUhK5ODeB7maSvOnD8Dy45XvRcvHgtV' in parents", "'1dwvD6yLgQJ8FZyoz6WEPlTrlnXuQdbIK' in parents")); 
+$foldersCondition = $folderId ? "'{$folderId}' in parents" :  "({$allfoldersCondition})";
 
 // print('<p>Ready for google drive api</p>');
 $optParams = array(
     'pageSize' => 100,
     'fields' => "files(id,name,thumbnailLink,webViewLink)",
-    'q' => "'".$folderId."' in parents",
+    'q' => $foldersCondition
     );
 $result = $service->files->listFiles($optParams);
 // $object = (object) array_filter((array) $result);

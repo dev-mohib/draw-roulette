@@ -55,7 +55,7 @@ const Index = () => {
     return (
     <div data-theme={theme}>
       <Menu />
-      <div className='h-screen w-full flex flex-col justify-between py-3 px-5 items-center pt-20'>
+      <div className='min-h-screen w-full flex flex-col justify-between py-3 px-5 items-center pt-20'>
           <div className='w-full flex-c-c'>
             <div className=' text-white w-1/2 flex-r-c'>
               <div className='flex'>
@@ -76,9 +76,9 @@ const Index = () => {
           {/* <div className='w-1/2'>
             <input onChange={e => setPtojectName(e.target.value)}   type="text" className="input w-full" placeholder="Project Name" required></input>
           </div> */}
-          <div className='w-full flex justify-end pr-16'>
-            <Dropdown />
-          </div>
+              <div className='w-full flex justify-end sm:pr-0 md:pr-0 lg:pr-0 '>
+                <Dropdown />
+              </div>
             </div>
           <div>
             {
@@ -90,11 +90,14 @@ const Index = () => {
               : 
               <div className='flex flex-wrap self-center items-center'>
               {
-                googleImages.slice(0, imageCount).map((d, i) =><div key={i}  className='w-52 h-52 m-2 relative'>
+                googleImages.slice(0, imageCount).map((d, i) =><div key={i}  className='m-2 relative'>
                   {i+1 === imageCount && <RiDeleteBinLine
                     onClick={() => setImageCount(imageCount > 1  ? imageCount - 1 : 1)}
                     className='absolute top-1 right-1 active:text-blue-500 cursor-pointer' size={20}  />}
-                  <img  src={d.thumbnailLink} alt={d.name} className="w-52 h-52" referrerPolicy="no-referrer"/>
+                  <img  src={d.thumbnailLink} alt={d.name} className="" style={{
+                    width : '16vw',
+                    height: '16vw'
+                  }} referrerPolicy="no-referrer"/>
                 </div>)
               }
               <div onTouchEnd={() => {
@@ -103,13 +106,18 @@ const Index = () => {
               onClick={() => {
                 setImageCount(imageCount < 6  ? imageCount + 1 : 6)
               }}
-              className='flex-r-c w-52 h-52 bg-gray-400 rounded hover:bg-gray-200 cursor-pointer active:bg-blue-400'>
+              className='flex-r-c bg-gray-400 rounded hover:bg-gray-200 cursor-pointer active:bg-blue-400'
+                style={{
+                  width : '16vw',
+                  height: '16vw'
+                }}
+                >
                 <IoMdAdd size={40}  />
               </div>
           </div>
             }
           </div>
-          <div className='self-end flex justify-end px-2'>
+          <div className='self-end flex justify-end'>
             <button onClick={() => {
               setFetching(true)
               const newList = shuffle(googleImages)
@@ -117,8 +125,8 @@ const Index = () => {
                 setGoogleImages([...newList])
                 setFetching(false)
               },1350)
-              }} data-modal-toggle="defaultModal" type="button" className="btn btn-secondary mr-3">Shuffle</button>
-              <div className='mx-2'> 
+              }} data-modal-toggle="defaultModal" type="button" className="btn btn-secondary ">Shuffle</button>
+              <div className='sm:mx-0.5 mx-2'> 
                 <button onClick={startGame}  className='btn btn-primary'>Start Game</button>
               </div>
             <button onClick={() => navigate("/print", {state : 
@@ -126,7 +134,7 @@ const Index = () => {
               googleImages : googleImages.slice(0, imageCount),
               time : timeDefaults[timeIndex].label,
               title : projectName
-              }})}  className='btn btn-primary ml-3 mx-0.5'>Print</button>
+              }})}  className='btn btn-primary sm:ml-1 md:ml-1 lg:ml-3 mx-0.5'>Print</button>
           </div>
       </div>
     </div>

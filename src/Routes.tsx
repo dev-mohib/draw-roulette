@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 // import Canvas from 'pages/Canvas/CanvasView'
 import LoginPage from '@pages/login'
@@ -10,7 +11,12 @@ import Gameplay from '@pages/gameplay'
 import NewGame from '@pages/newgame'
 import ResultPage from '@pages/result'
 import PrintView from '@pages/print'
+import { uiActions, useAppDispatch } from '@state/store';
 const AppRoutes = () => {
+    const dispatch = useAppDispatch()
+    useEffect(() => {
+        dispatch(uiActions.setTheme(localStorage.getItem('theme')??'light'))
+    },[])
     return(
     <BrowserRouter>
         <Routes>

@@ -16,8 +16,8 @@ const initialState : GameStateType  = {
     id : Date.now().toString(),
     googleImages : [],
     category : {
-        title : 'Halloween',
-        id : '1m8cwRZCvVgc_5L32ES8Xee3KxUx0vtxe'
+        title : 'All',
+        id : ''
     }
    }
 export const gameSlice = createSlice({
