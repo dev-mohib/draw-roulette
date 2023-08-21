@@ -1,8 +1,6 @@
+<IfModule mod_rewrite.c>
 RewriteEngine On
-
 # Exclude /api/ requests from the redirection
 RewriteCond %{REQUEST_URI} !^/api/ [NC]
-
-# Redirect HTTPS requests to the dist directory
-RewriteCond %{HTTPS} on
 RewriteRule ^(.*)$ dist/$1 [L]
+</IfModule>
