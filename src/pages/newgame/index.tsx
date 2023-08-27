@@ -25,7 +25,9 @@ const Index = () => {
   
   
   useEffect(() => {
-      getGoogleDriveFiles()
+      // getGoogleDriveFiles()
+      getPhotos()
+      
   },[category])
   const getGoogleDriveFiles = async() => {
     setFetching(true)
@@ -37,6 +39,16 @@ const Index = () => {
       // dispatch(gameActions.setGoogleImages(shuffle(response)))
       setGoogleImages(shuffle(response))
       setFetching(false)
+  }
+
+  const getPhotos = async() => {
+    setFetching(true)
+    const response = await fetch(`${import.meta.env.VITE_API_URL}/photos?id=${category.id}`).then(d => d.json()).catch(e => {
+      console.error("Error : ", e)
+      return []
+    })
+    setGoogleImages(shuffle(response))
+    setFetching(false)
   }
   
   const startGame = () => {

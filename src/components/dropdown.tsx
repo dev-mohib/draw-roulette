@@ -1,24 +1,27 @@
 import { gameActions, useAppDispatch, useAppSelector } from '@state/store'
 import React, { useEffect, useState } from 'react'
+import { Category } from 'types/index'
 
 const Dropdown = () => {
     const [visible, setVisible] = useState(false)
     const { category } = useAppSelector(s => s.gameSlice)
     const dispatch = useAppDispatch()
-    const [list, setList] = useState<{title:string, id:string}[]| null>(null)
+    const [list, setList] = useState<Category[]| null>(null)
     const [isLoaded, setLoaded] = React.useState(false)
-    const fetchCategories = ()=> {
-        fetch(`${import.meta.env.VITE_API_URL}/dropdown.php`)
-        .then(res => res.json())
-        .then((data) => {
-            console.log({data})
-            setList(data)
-        })
-        .catch(e => console.error({e}))
-    }
     useEffect(() =>{ 
-        fetchCategories()
+        // fetchCategories()
+        getCategories()
     },[])
+
+    const getCategories = async() => {
+        console.log("fetching categories")
+        const response = await fetch(`${import.meta.env.VITE_API_URL}/category`).then(d => d.json()).catch(e => {
+            console.error("Error : ", e)
+            return []
+          })
+        console.log({response})
+        setList(response)
+      }
 if(list)
   return (
     <div>
@@ -39,12 +42,12 @@ if(list)
                 </li>
             {list.map((item, i) => <li key={item.id}  onClick={() => {
                 dispatch(gameActions.setCategory({
-                title : item.title,
-                id : item.id
+                title : item.name,
+                id : item.drive_id
                 }))
                 setVisible(false)
                 }}>
-                    <a href="#" className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">{item.title}</a>
+                    <a href="#" className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">{item.name}</a>
                 </li>)
             }
             </ul>

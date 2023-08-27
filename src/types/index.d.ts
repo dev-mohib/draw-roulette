@@ -4,3 +4,11 @@ export type GoogleDriveResponse = {
     thumbnailLink : string,
     webViewLink : string
 }
+
+export type Category = {
+    id: any,
+    name:any,
+    drive_id: any
+    created_at? : any
+    updated_at? : any
+}
