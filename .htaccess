@@ -1,4 +1,13 @@
+<!-- Add the following htaccess to dist directory after every build -->
 <IfModule mod_rewrite.c>
-RewriteEngine On
-RewriteRule ^(.*)$ dist/$1 [L]
+    <IfModule mod_negotiation.c>
+        Options -MultiViews -Indexes
+    </IfModule>
+
+    RewriteEngine On
+
+    # Send Requests To Front Controller...
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteRule ^ index.html [L]
 </IfModule>
