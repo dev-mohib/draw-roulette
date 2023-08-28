@@ -85,7 +85,7 @@ const ResultBody = () => {
   </div>
   )
 }
-
+const images = [1,2,3,4,5]
 const handleUndo = () => {
   const history = canvasList[activeCanvas].history.undo 
   if(history.length > 0){
@@ -98,10 +98,15 @@ const handleUndo = () => {
 const handleRedo = () =>{}
   return ( 
     <>
-    <div className='h-screen w-screen orientation'>
+    <div className='h-screen w-full orientation m-0'>
         <div className='flex-r-b bg-gray-200 relative side'>
           <GrPrevious onClick={() => dispatch(gameActions.setActiveCanvas(activeCanvas > 0  ? activeCanvas - 1 : 0))} className='p-3 bg-gray-400 active:bg-gray-300' size={40}/>
-          <img src={canvasList[activeCanvas].image.thumbnailLink} referrerPolicy='no-referrer' className='landscape:w-full portrait:h-full object-cover'/>
+          {/* <img src={canvasList[activeCanvas].image.thumbnailLink} referrerPolicy='no-referrer' className='landscape:w-full portrait:h-full object-cover'/> */}
+          <div className='flex flex-wrap'>
+            {canvasList.map((image, i) => <div className={`py-2 px-4 ${i == activeCanvas && 'bg-blue-300'}`} >
+              <img  src={image.image.thumbnailLink} className='w-32 h-32'/>
+            </div>)}
+          </div>
           <div className='h-full flex-c-c relative'>
             {/* <div className='bg-black opacity-40 p-1 flex-r-c text-white absolute top-0 right-0  '>
               <Undo />
@@ -110,11 +115,11 @@ const handleRedo = () =>{}
             <GrNext onClick={() => dispatch(gameActions.setActiveCanvas(activeCanvas < canvasList.length -1 ? activeCanvas + 1 : activeCanvas))}  className='p-3 bg-gray-400 active:bg-gray-300' size={40}/>
           </div>
         </div>
-        <div className='border-2 border-black side'>
+        <div className='border-2 border-black'>
           <MyCanvas />
         </div>
     </div>
-    <div className='flex-r-b absolute top-3 -left-2 py-3 bg-black opacity-40 text-white rounded-lg z-50'>
+    <div className='flex-r-b absolute bottom-32 -left-1 py-3 bg-black opacity-40 text-white rounded-lg z-50'>
       <div className='mr-5 ml-3'>
         <h2> Drawing {activeCanvas + 1}</h2>
       </div>
@@ -128,13 +133,14 @@ const handleRedo = () =>{}
            gameStatus == 'finished' ? <TbReportAnalytics size={20} className='text-blue-400' /> : null
         }
       </div>
-      {
+     
+    </div>
+    {
       gameStatus == 'finished'&&
-      <div className='absolute top-20 left-0 h-7  bg-black px-10 py-3 flex-r-c'>
+      <div className='absolute bottom-20 -right-1 h-7  bg-black px-10 py-3 flex-r-c z-50'>
         <button onClick={() => navigate('/result')}>View Report</button>
       </div>
       }
-    </div>
       {
         isReportView && <Modal body={<ResultBody />} header={"Result"} isShow={isReportView} setShow={setReportView} actions={<button className='btn btn-primary'>Generate PDF</button>} />
       }

@@ -13,10 +13,11 @@ const MyCanvas = () => {
 
     const loadCanvas = () => {
       const _canvas = new fabric.Canvas('myCanvas', {
-        width : orientation == 'landscape-primary' ? window.innerWidth/2 : window.innerWidth,
-        height : orientation == 'landscape-primary' ? window.innerHeight : window.innerHeight/2,
+        width : '100%',//orientation == 'landscape-primary' ? window.innerWidth/2 : window.innerWidth,
+        height : '100%',//orientation == 'landscape-primary' ? window.innerHeight : window.innerHeight/2,
         isDrawingMode :gameStatus === 'playing' ?  true : false,
         renderOnAddRemove : true,
+        backgroundColor : "#000000"
       })
       let _pencilBrush =  new fabric.PencilBrush(_canvas)
       _pencilBrush.initialize(_canvas)
@@ -28,8 +29,8 @@ const MyCanvas = () => {
     useEffect(() =>{
       if(isLoaded){
         canvas.setDimensions({ 
-          width : orientation == 'landscape-primary' ? window.innerWidth/2 : window.innerWidth,
-          height : orientation == 'landscape-primary' ? window.innerHeight : window.innerHeight/2
+          width : window.innerWidth,//orientation == 'landscape-primary' ? window.innerWidth/2 : window.innerWidth,
+          height : window.innerHeight,//orientation == 'landscape-primary' ? window.innerHeight : window.innerHeight/2
       });
       if(gameStatus === 'playing')
         canvas.isDrawingMode = true
